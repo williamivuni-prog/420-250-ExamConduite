@@ -10,9 +10,9 @@
 | R1 | Versions de Unity différentes | 6 (élevée) | William |
 | R3 | Réapparition au mauvais point de contrôle | 6 (élevée) | Lucas |
 | R4 | Temps insuffisant pour BF-02 et BF-03 | 6 (élevée) | Erwan |
-| R6 | Intégration des objets rechargeables | 4 (moyenne) | itsxten |
+| R6 | Intégration des objets rechargeables | 4 (moyenne) | Christine |
 | R2 | Conflit dans `CarController.cs` | 3 (moyenne) | William |
-| R5 | Résultats non affichés à la fin de la course | 3 (moyenne) | itsxten |
+| R5 | Résultats non affichés à la fin de la course | 3 (moyenne) | Christine |
 
 ## R1 — Versions de Unity différentes
 
@@ -60,7 +60,7 @@
 - **Catégorie :** Planification
 - **P :** 2 · **I :** 3 · **Criticité :** 6 (élevée)
 - **Stratégie :** Réduire
-- **Mitigation :** Erwan découpe BF-02 et BF-03 en tâches vérifiables dans leurs issues et fait valider une version jouable des deux fonctionnalités par un autre membre au plus tard le 22 novembre 2026.
+- **Mitigation :** Erwan, responsable de BF-02, découpe les points de contrôle en tâches vérifiables dans l'issue BF-02; Lucas, responsable de BF-03, fait de même pour la réapparition dans l'issue BF-03. Ils font ensuite valider ensemble une version jouable des deux fonctionnalités par un autre membre au plus tard le 22 novembre 2026.
 - **Déclencheur :** Le 22 novembre 2026, BF-02 ou BF-03 n'est pas démontrable dans une course complète.
 - **Contingence :** Terminer d'abord BF-02, puis simplifier BF-03 afin que la voiture réapparaisse au point de départ au lieu du dernier point de contrôle.
 - **Responsable :** Erwan
@@ -73,10 +73,10 @@
 - **Catégorie :** Exigences
 - **P :** 1 · **I :** 3 · **Criticité :** 3 (moyenne)
 - **Stratégie :** Réduire
-- **Mitigation :** itsxten ajoute un test d'intégration manuel vérifiable dans l'issue BF-20 : terminer une course, confirmer l'ouverture du panneau et comparer le temps final affiché avec le chronomètre.
+- **Mitigation :** Christine ajoute un test d'intégration manuel vérifiable dans l'issue BF-20 : terminer une course, confirmer l'ouverture du panneau et comparer le temps final affiché avec le chronomètre.
 - **Déclencheur :** —
 - **Contingence :** —
-- **Responsable :** itsxten
+- **Responsable :** Christine
 - **Statut :** Ouvert
 
 ## R6 — Intégration des objets rechargeables
@@ -86,8 +86,8 @@
 - **Catégorie :** Communication
 - **P :** 2 · **I :** 2 · **Criticité :** 4 (moyenne)
 - **Stratégie :** Réduire
-- **Mitigation :** itsxten maintient un seul prefab d'objet rechargeable et ajoute dans l'issue BF-04 une liste à cocher confirmant l'intégration du gameplay, de l'animation, de l'effet visuel et du son avant la fusion.
+- **Mitigation :** Christine maintient un seul prefab d'objet rechargeable et ajoute dans l'issue BF-04 une liste à cocher confirmant l'intégration du gameplay, de l'animation, de l'effet visuel et du son avant la fusion.
 - **Déclencheur :** —
 - **Contingence :** —
-- **Responsable :** itsxten
+- **Responsable :** Christine
 - **Statut :** Ouvert
