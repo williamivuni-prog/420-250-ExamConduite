@@ -3,6 +3,8 @@ using System.Collections.Generic;
 using UnityEngine;
 
 public class PlayerCamera : MonoBehaviour {
+	private static readonly int IsBoostingParameter = Animator.StringToHash("IsBoosting");
+	private static Animator boostAnimator;
 
 	public static Transform Target { get; set; } // ENCAPSULATION
 	public static float Distance { get; set; } // ENCAPSULATION
@@ -21,8 +23,19 @@ public class PlayerCamera : MonoBehaviour {
 		Height = height;
 	}
 
+	public static void SetBoosting(bool isBoosting) {
+		if (boostAnimator != null)
+			boostAnimator.SetBool(IsBoostingParameter, isBoosting);
+	}
+
 	private void Awake() {
+		boostAnimator = GetComponent<Animator>();
 		StartCoroutine(WaitForTransition());
+	}
+
+	private void OnDestroy() {
+		if (boostAnimator != null && boostAnimator.gameObject == gameObject)
+			boostAnimator = null;
 	}
 
 	private void FixedUpdate() {
