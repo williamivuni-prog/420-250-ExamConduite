@@ -6579,6 +6579,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::CarBoost
   boostParticle: {fileID: 6062500420100425643}
+  boostSound: {fileID: 8300000, guid: 113ee460fadc340e4957a7404a9fbb27, type: 3}
   boostKey: 304
   boostForce: 20
   maxBoost: 100
