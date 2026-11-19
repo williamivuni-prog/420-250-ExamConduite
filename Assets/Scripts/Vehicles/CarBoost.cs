@@ -4,6 +4,7 @@ using UnityEngine;
 public class CarBoost : MonoBehaviour
 {
     public ParticleSystem boostParticle;
+    public AudioClip boostSound;
 
     [SerializeField] private KeyCode boostKey = KeyCode.LeftShift;
     [SerializeField] private float boostForce = 20f;
@@ -13,6 +14,7 @@ public class CarBoost : MonoBehaviour
 
     private Rigidbody carRigidbody;
     private CarController carController;
+    private AudioSource boostAudio;
     private float currentBoost;
 
     public static float BoostAmount { get; private set; } = 100f;
@@ -21,6 +23,10 @@ public class CarBoost : MonoBehaviour
     {
         carRigidbody = GetComponent<Rigidbody>();
         carController = GetComponent<CarController>();
+        boostAudio = gameObject.AddComponent<AudioSource>();
+        boostAudio.clip = boostSound;
+        boostAudio.loop = true;
+        boostAudio.playOnAwake = false;
         currentBoost = maxBoost;
 
         if (boostParticle != null)
@@ -36,6 +42,7 @@ public class CarBoost : MonoBehaviour
         if (!isSelectedVehicle)
         {
             StopBoostParticle();
+            StopBoostSound();
             return;
         }
 
@@ -70,6 +77,18 @@ public class CarBoost : MonoBehaviour
             }
         }
 
+        if (boostSound != null)
+        {
+            if (isBoosting && !boostAudio.isPlaying)
+            {
+                boostAudio.Play();
+            }
+            else if (!isBoosting && boostAudio.isPlaying)
+            {
+                boostAudio.Stop();
+            }
+        }
+
         if (isBoosting)
         {
             carRigidbody.AddForce(
@@ -84,6 +103,14 @@ public class CarBoost : MonoBehaviour
         if (boostParticle != null && boostParticle.isPlaying)
         {
             boostParticle.Stop();
+        }
+    }
+
+    private void StopBoostSound()
+    {
+        if (boostAudio.isPlaying)
+        {
+            boostAudio.Stop();
         }
     }
 }

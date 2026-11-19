@@ -6452,6 +6452,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   boostParticle: {fileID: 7417866126527229491}
+  boostSound: {fileID: 8300000, guid: 113ee460fadc340e4957a7404a9fbb27, type: 3}
   boostKey: 304
   boostForce: 20
   maxBoost: 100
