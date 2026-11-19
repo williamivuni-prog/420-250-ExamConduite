@@ -3,6 +3,8 @@ using UnityEngine;
 [RequireComponent(typeof(Rigidbody))]
 public class CarBoost : MonoBehaviour
 {
+    public ParticleSystem boostParticle;
+
     [SerializeField] private KeyCode boostKey = KeyCode.LeftShift;
     [SerializeField] private float boostForce = 20f;
     [SerializeField] private float maxBoost = 100f;
@@ -20,6 +22,11 @@ public class CarBoost : MonoBehaviour
         carRigidbody = GetComponent<Rigidbody>();
         carController = GetComponent<CarController>();
         currentBoost = maxBoost;
+
+        if (boostParticle != null)
+        {
+            boostParticle.Stop();
+        }
     }
 
     private void FixedUpdate()
@@ -28,6 +35,7 @@ public class CarBoost : MonoBehaviour
 
         if (!isSelectedVehicle)
         {
+            StopBoostParticle();
             return;
         }
 
@@ -50,12 +58,32 @@ public class CarBoost : MonoBehaviour
 
         PlayerCamera.SetBoosting(isBoosting);
 
+        if (boostParticle != null)
+        {
+            if (isBoosting && boostParticle.isStopped)
+            {
+                boostParticle.Play();
+            }
+            else if (!isBoosting && boostParticle.isPlaying)
+            {
+                boostParticle.Stop();
+            }
+        }
+
         if (isBoosting)
         {
             carRigidbody.AddForce(
                 transform.forward * boostForce,
                 ForceMode.Acceleration
             );
+        }
+    }
+
+    private void StopBoostParticle()
+    {
+        if (boostParticle != null && boostParticle.isPlaying)
+        {
+            boostParticle.Stop();
         }
     }
 }
