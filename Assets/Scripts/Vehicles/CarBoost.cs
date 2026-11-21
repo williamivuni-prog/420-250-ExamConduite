@@ -17,7 +17,8 @@ public class CarBoost : MonoBehaviour
     private AudioSource boostAudio;
     private float currentBoost;
     private BoostEnergyRegle boostEnergyRegle;
-
+    private bool isBoostPressed;
+    private bool isAccelerating;
     public static float BoostAmount { get; private set; } = 100f;
 
     private void Awake()
@@ -48,8 +49,6 @@ public class CarBoost : MonoBehaviour
             return;
         }
 
-        bool isBoostPressed = Input.GetKey(boostKey);
-        bool isAccelerating = Input.GetAxis("Vertical") > 0f;
         bool isBoosting = isBoostPressed && isAccelerating &&
             currentBoost > 0f && !GameManager.IsGameOver && GameManager.IsGameStarted;
 
@@ -117,4 +116,11 @@ public class CarBoost : MonoBehaviour
             boostAudio.Stop();
         }
     }
+
+    private void Update()
+    {
+        isBoostPressed = Input.GetKey(boostKey);
+        isAccelerating = Input.GetAxis("Vertical") > 0f;
+    }
 }
+
