@@ -16,6 +16,7 @@ public class CarBoost : MonoBehaviour
     private CarController carController;
     private AudioSource boostAudio;
     private float currentBoost;
+    private BoostEnergyRegle boostEnergyRegle;
 
     public static float BoostAmount { get; private set; } = 100f;
 
@@ -28,6 +29,7 @@ public class CarBoost : MonoBehaviour
         boostAudio.loop = true;
         boostAudio.playOnAwake = false;
         currentBoost = maxBoost;
+        boostEnergyRegle = new BoostEnergyRegle();
 
         if (boostParticle != null)
         {
@@ -51,17 +53,19 @@ public class CarBoost : MonoBehaviour
         bool isBoosting = isBoostPressed && isAccelerating &&
             currentBoost > 0f && !GameManager.IsGameOver && GameManager.IsGameStarted;
 
-        if (isBoosting)
-        {
-            currentBoost -= boostUseRate * Time.fixedDeltaTime;
-        }
-        else if (!isBoostPressed)
-        {
-            currentBoost += boostRechargeRate * Time.fixedDeltaTime;
-        }
 
-        currentBoost = Mathf.Clamp(currentBoost, 0f, maxBoost);
+        currentBoost = boostEnergyRegle.CalculerBoost(
+            currentBoost,
+            isBoosting,
+            isBoostPressed,
+            boostUseRate,
+            boostRechargeRate,
+            maxBoost,
+            Time.fixedDeltaTime
+        );
+
         BoostAmount = currentBoost;
+
 
         PlayerCamera.SetBoosting(isBoosting);
 
