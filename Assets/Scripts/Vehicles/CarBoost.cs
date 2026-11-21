@@ -68,6 +68,17 @@ public class CarBoost : MonoBehaviour
 
         PlayerCamera.SetBoosting(isBoosting);
 
+        GererEffetsBoost(isBoosting);
+
+        if (isBoosting)
+        {
+            AppliquerBoost();
+        }
+    }
+
+
+    private void GererEffetsBoost(bool isBoosting)
+    {
         if (boostParticle != null)
         {
             if (isBoosting && boostParticle.isStopped)
@@ -91,14 +102,14 @@ public class CarBoost : MonoBehaviour
                 boostAudio.Stop();
             }
         }
+    }
 
-        if (isBoosting)
-        {
-            carRigidbody.AddForce(
-                transform.forward * boostForce,
-                ForceMode.Acceleration
-            );
-        }
+    private void AppliquerBoost()
+    {
+        carRigidbody.AddForce(
+            transform.forward * boostForce,
+            ForceMode.Acceleration
+        );
     }
 
     private void StopBoostParticle()
