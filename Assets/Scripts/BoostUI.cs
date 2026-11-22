@@ -12,6 +12,11 @@ public class BoostUI : MonoBehaviour
 
     private void Update()
     {
-        boostBar.fillAmount = CarBoost.BoostAmount / 100f;
+        MettreAJourBarre(CarBoost.BoostAmount / 100f);
+    }
+
+    public void MettreAJourBarre(float valeurNormalisee)
+    {
+        boostBar.fillAmount = valeurNormalisee;
     }
 }
