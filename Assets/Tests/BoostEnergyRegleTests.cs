@@ -4,7 +4,7 @@ public class BoostEnergyRegleTests
 {
     // William Test
     [Test]
-    public void TestBoostEnergyRules()
+    public void BoostingDecreasesEnergy()
     {
         // Arrange
         BoostEnergyRegle regle = new BoostEnergyRegle();
@@ -16,6 +16,14 @@ public class BoostEnergyRegleTests
 
         // Assert
         Assert.AreEqual(70f, energieApresBoost, 0.001f);
+    }
+
+    // William Test
+    [Test]
+    public void EnergyRechargesWhenBoostIsNotPressed()
+    {
+        // Arrange
+        BoostEnergyRegle regle = new BoostEnergyRegle();
 
         // Act
         float energieApresRecharge = regle.CalculerBoost(
@@ -24,6 +32,14 @@ public class BoostEnergyRegleTests
 
         // Assert
         Assert.AreEqual(80f, energieApresRecharge, 0.001f);
+    }
+
+    // William Test
+    [Test]
+    public void EnergyDoesNotRechargeWhileBoostKeyIsPressed()
+    {
+        // Arrange
+        BoostEnergyRegle regle = new BoostEnergyRegle();
 
         // Act
         float energieAvecToucheMaintenue = regle.CalculerBoost(
@@ -32,6 +48,14 @@ public class BoostEnergyRegleTests
 
         // Assert
         Assert.AreEqual(50f, energieAvecToucheMaintenue, 0.001f);
+    }
+
+    // William Test
+    [Test]
+    public void EnergyCannotGoBelowZero()
+    {
+        // Arrange
+        BoostEnergyRegle regle = new BoostEnergyRegle();
 
         // Act
         float energieSousZero = regle.CalculerBoost(
@@ -40,13 +64,21 @@ public class BoostEnergyRegleTests
 
         // Assert
         Assert.AreEqual(0f, energieSousZero, 0.001f);
+    }
+
+    // William Test
+    [Test]
+    public void EnergyCannotExceedMaximum()
+    {
+        // Arrange
+        BoostEnergyRegle regle = new BoostEnergyRegle();
 
         // Act
         float energieAuDessusMaximum = regle.CalculerBoost(
-            95f, false, false, 30f, 15f, 100f, 1f
+            55f, false, false, 30f, 15f, 60f, 1f
         );
 
         // Assert
-        Assert.AreEqual(100f, energieAuDessusMaximum, 0.001f);
+        Assert.AreEqual(60f, energieAuDessusMaximum, 0.001f);
     }
 }
