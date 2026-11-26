@@ -36,13 +36,19 @@ public class LapsManager : MonoBehaviour {
         }
 		
 		_currentTime = System.TimeSpan.FromSeconds(_timer);
-		_timerText.text = _currentTime.Hours.ToString("00") + ":" +
-			_currentTime.Minutes.ToString("00") + ":" +
-			_currentTime.Seconds.ToString("00") + "." +
-			_currentTime.Milliseconds / 100;
-	}
+        _timerText.text = FormatTime(_totalTime + _currentTime);
+    }
 
-	private void PopulateList(List<GameObject> list, GameObject parent) { // ABSTRACTION
+	// Methode pour afficher le temps 
+    private string FormatTime(System.TimeSpan time)
+    {
+        return time.Hours.ToString("00") + ":" +
+            time.Minutes.ToString("00") + ":" +
+            time.Seconds.ToString("00") + "." +
+            time.Milliseconds / 100;
+    }
+
+    private void PopulateList(List<GameObject> list, GameObject parent) { // ABSTRACTION
 		Transform[] bodies = parent.GetComponentsInChildren<Transform>();
 		foreach (Transform body in bodies) {
 			if (!body.name.Contains("lap")) {
@@ -54,35 +60,44 @@ public class LapsManager : MonoBehaviour {
 		AddNextCheckpoint(list);
 	}
 
-	private void AddNextCheckpoint(List<GameObject> rings) { // ABSTRACTION
-		if (rings.Count == 0) {
-			
-			_currentList.Clear();
-			_ringLaps[_currentLap].SetActive(false);
-			_currentLap++;
-			if (_currentLap <= 2) {
-				_ringLaps[_currentLap].SetActive(true);
-				PopulateList(_currentList, _ringLaps[_currentLap]);
+    private void AddNextCheckpoint(List<GameObject> rings)
+    {
+        if (rings.Count == 0)
+        {
+            System.TimeSpan completedLapTime = System.TimeSpan.FromSeconds(_timer);
+            _totalTime += completedLapTime;
+            _timer = 0f;
 
-				_lapCounterText.text = (_currentLap + 1).ToString();
-			} else
-				HighscoreController.Instance.EndGame(_totalTime);
+            _currentList.Clear();
+            _ringLaps[_currentLap].SetActive(false);
+            _currentLap++;
 
-			_timer = 0f;
-			_totalTime += _currentTime;
-			if (_currentLap <= 2) PopupSaveLastTime();
-		} else {
-				
-			if (_currentLap <= 2) {
-				rings[0].SetActive(true);
-				_nextCheckpoint = rings[0];
+            if (_currentLap <= 2)
+            {
+                _ringLaps[_currentLap].SetActive(true);
+                PopulateList(_currentList, _ringLaps[_currentLap]);
 
-				minimapController.RegisterMapObject(_nextCheckpoint, checkpointIcon);
-			}
-		}
-	}
+                _lapCounterText.text = (_currentLap + 1).ToString();
+                PopupSaveLastTime(completedLapTime);
+            }
+            else
+            {
+                HighscoreController.Instance.EndGame(_totalTime);
+            }
+        }
+        else
+        {
+            if (_currentLap <= 2)
+            {
+                rings[0].SetActive(true);
+                _nextCheckpoint = rings[0];
 
-	public void RemoveLastCheckpoint(GameObject ring) { // ABSTRACTION
+                minimapController.RegisterMapObject(_nextCheckpoint, checkpointIcon);
+            }
+        }
+    }
+
+    public void RemoveLastCheckpoint(GameObject ring) { // ABSTRACTION
 		if (!_nextCheckpoint.GetComponent<LapRing>().shouldSkip)
 			LastCheckpoint = _nextCheckpoint;
 
@@ -96,9 +111,10 @@ public class LapsManager : MonoBehaviour {
 		}
 	}
 
-	private void PopupSaveLastTime() { // ABSTRACTION
+	private void PopupSaveLastTime(System.TimeSpan completedLapTime) { // ABSTRACTION
 		GameObject _timerClone = Instantiate(_timerText.gameObject, _timerText.transform.position, _timerText.transform.rotation);
-		_timerClone.transform.SetParent(_timerText.transform.parent);
+        _timerClone.GetComponent<TMP_Text>().text = FormatTime(completedLapTime);
+        _timerClone.transform.SetParent(_timerText.transform.parent);
 		_timerClone.transform.localScale = new Vector3(1, 1, 1);
 		_timerClone.transform.localPosition = _timerText.transform.localPosition;
 		_timerClone.GetComponent<TMP_Text>().color = Color.red;
