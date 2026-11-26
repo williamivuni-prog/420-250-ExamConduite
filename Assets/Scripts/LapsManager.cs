@@ -19,7 +19,7 @@ public class LapsManager : MonoBehaviour {
 	private float _timer = 0f;
 	private System.TimeSpan _currentTime;
 	private System.TimeSpan _totalTime;
-	private bool _isCounting = false;
+	
 	[SerializeField] private TMP_Text _timerText;
 	[SerializeField] private TMP_Text _lapCounterText;
 
@@ -30,7 +30,11 @@ public class LapsManager : MonoBehaviour {
 	}
 
 	private void Update() {
-		if (_isCounting) _timer = Mathf.Max(0, _timer + Time.deltaTime);
+		if (GameManager.IsGameStarted && !GameManager.IsGameOver)
+		{
+            _timer = Mathf.Max(0, _timer + Time.deltaTime);
+        }
+		
 		_currentTime = System.TimeSpan.FromSeconds(_timer);
 		_timerText.text = _currentTime.Hours.ToString("00") + ":" +
 			_currentTime.Minutes.ToString("00") + ":" +
@@ -52,7 +56,7 @@ public class LapsManager : MonoBehaviour {
 
 	private void AddNextCheckpoint(List<GameObject> rings) { // ABSTRACTION
 		if (rings.Count == 0) {
-			_isCounting = false;
+			
 			_currentList.Clear();
 			_ringLaps[_currentLap].SetActive(false);
 			_currentLap++;
@@ -68,9 +72,7 @@ public class LapsManager : MonoBehaviour {
 			_totalTime += _currentTime;
 			if (_currentLap <= 2) PopupSaveLastTime();
 		} else {
-			if (GameManager.IsGameStarted)
-				_isCounting = true;
-
+				
 			if (_currentLap <= 2) {
 				rings[0].SetActive(true);
 				_nextCheckpoint = rings[0];
