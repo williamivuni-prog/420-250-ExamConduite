@@ -10,8 +10,10 @@ public class LapsManager : MonoBehaviour {
 	[SerializeField] private MinimapController minimapController;
 	[SerializeField] private GameObject[] _ringLaps = new GameObject[3];
 	[SerializeField] private List<GameObject> _currentList;
+    [SerializeField] private AudioClip checkpointSound;
+    private AudioSource checkpointAudio;
 
-	private int _currentLap = 0;
+    private int _currentLap = 0;
 	private GameObject _nextCheckpoint;
 
 	[HideInInspector] public static GameObject LastCheckpoint;
@@ -24,7 +26,8 @@ public class LapsManager : MonoBehaviour {
 	[SerializeField] private TMP_Text _lapCounterText;
 
 	private void Start() {
-		_currentLap = 0;
+        checkpointAudio = GetComponent<AudioSource>();
+        _currentLap = 0;
 		LastCheckpoint = GameObject.Find("Player Spawn");
 		PopulateList(_currentList, _ringLaps[_currentLap]);
 	}
@@ -86,6 +89,8 @@ public class LapsManager : MonoBehaviour {
         if (ring == null || ring != _nextCheckpoint)
             return;
 
+        PlayCheckpointSound();
+
         if (!ring.GetComponent<LapRing>().shouldSkip)
             LastCheckpoint = ring;
 
@@ -111,4 +116,13 @@ public class LapsManager : MonoBehaviour {
 
 		Destroy(_timerClone, 6f);
 	}
+
+    // Methode pour jouer l'audio
+    private void PlayCheckpointSound()
+    {
+        if (checkpointAudio != null && checkpointSound != null)
+        {
+            checkpointAudio.PlayOneShot(checkpointSound, 1.0f);
+        }
+    }
 }
