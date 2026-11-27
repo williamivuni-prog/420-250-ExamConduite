@@ -80,21 +80,24 @@ public class LapsManager : MonoBehaviour {
 		}
 	}
 
-	public void RemoveLastCheckpoint(GameObject ring) { // ABSTRACTION
-		if (!_nextCheckpoint.GetComponent<LapRing>().shouldSkip)
-			LastCheckpoint = _nextCheckpoint;
+    // Modification de l'ancienne methode
+	public void RemoveLastCheckpoint(GameObject ring)
+    {
+        if (ring == null || ring != _nextCheckpoint)
+            return;
 
-		if (_nextCheckpoint == ring) {
-			_currentList[0].SetActive(false);
-			minimapController.RemoveMapObject(_nextCheckpoint);
+        if (!ring.GetComponent<LapRing>().shouldSkip)
+            LastCheckpoint = ring;
 
-			_currentList.RemoveAt(0);
-			_currentList.TrimExcess();
-			AddNextCheckpoint(_currentList);
-		}
-	}
+        _currentList[0].SetActive(false);
+        minimapController.RemoveMapObject(ring);
 
-	private void PopupSaveLastTime() { // ABSTRACTION
+        _currentList.RemoveAt(0);
+        _currentList.TrimExcess();
+        AddNextCheckpoint(_currentList);
+    }
+
+    private void PopupSaveLastTime() { // ABSTRACTION
 		GameObject _timerClone = Instantiate(_timerText.gameObject, _timerText.transform.position, _timerText.transform.rotation);
 		_timerClone.transform.SetParent(_timerText.transform.parent);
 		_timerClone.transform.localScale = new Vector3(1, 1, 1);
