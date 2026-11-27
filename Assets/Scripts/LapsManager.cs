@@ -97,19 +97,21 @@ public class LapsManager : MonoBehaviour {
         }
     }
 
-    public void RemoveLastCheckpoint(GameObject ring) { // ABSTRACTION
-		if (!_nextCheckpoint.GetComponent<LapRing>().shouldSkip)
-			LastCheckpoint = _nextCheckpoint;
+	public void RemoveLastCheckpoint(GameObject ring)
+    {
+        if (ring == null || ring != _nextCheckpoint)
+            return;
 
-		if (_nextCheckpoint == ring) {
-			_currentList[0].SetActive(false);
-			minimapController.RemoveMapObject(_nextCheckpoint);
+        if (!ring.GetComponent<LapRing>().shouldSkip)
+            LastCheckpoint = ring;
 
-			_currentList.RemoveAt(0);
-			_currentList.TrimExcess();
-			AddNextCheckpoint(_currentList);
-		}
-	}
+        _currentList[0].SetActive(false);
+        minimapController.RemoveMapObject(ring);
+
+        _currentList.RemoveAt(0);
+        _currentList.TrimExcess();
+        AddNextCheckpoint(_currentList);
+    }
 
 	private void PopupSaveLastTime(System.TimeSpan completedLapTime) { // ABSTRACTION
 		GameObject _timerClone = Instantiate(_timerText.gameObject, _timerText.transform.position, _timerText.transform.rotation);
